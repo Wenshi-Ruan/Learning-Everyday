@@ -1,0 +1,60 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Virtual Environment
+venv/
+env/
+ENV/
+.venv
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Project specific
+output/
+cache/
+*.json
+!package.json
+!package-lock.json
+.env
+.env.local
+.env.*.local
+.DS_Store
+
+# API Keys and sensitive files
+web/.env.local
+web/.env.production
+api/.env
+*.key
+*.pem
+
+# Keep important markdown files
+!README*.md
+!DEPLOY*.md
+!START_HERE.md
+!TODO.md
+!QUICKSTART.md
+
