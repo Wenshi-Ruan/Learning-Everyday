@@ -51,6 +51,9 @@ api/.env
 *.key
 *.pem
 
+# Vercel config (keep this)
+!vercel.json
+
 # Keep important markdown files
 !README*.md
 !DEPLOY*.md
