@@ -1,10 +1,7 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
 import './globals.css'
 import { getCurrentBackgroundImage } from '@/constants/theme'
 import { Nav } from '@/components/Nav'
-
-const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
   title: '每日5分钟读懂一家公司',
