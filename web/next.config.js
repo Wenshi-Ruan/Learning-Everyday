@@ -8,12 +8,13 @@ const nextConfig = {
     NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
     NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
   },
-  // 确保路径别名正确解析
-  webpack: (config) => {
-    config.resolve.alias = {
+  // 确保路径别名正确解析（Root Directory 设置为 web 时）
+  webpack: (config, { isServer }) => {
+    const alias = {
       ...config.resolve.alias,
-      '@': path.resolve(__dirname),
+      '@': path.resolve(process.cwd()),
     }
+    config.resolve.alias = alias
     return config
   },
 }
