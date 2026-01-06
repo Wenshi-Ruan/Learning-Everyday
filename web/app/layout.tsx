@@ -18,7 +18,6 @@ export default function RootLayout({
   return (
     <html lang="zh-CN">
       <body 
-        className={inter.className}
         style={{
           '--bg-image': `url('${bgImage}')`,
         } as React.CSSProperties}
