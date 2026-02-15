@@ -66,7 +66,7 @@ class CompanyStoryGenerator:
         prompt: str,
         tools: Optional[list] = None,
         max_retries: int = 3,
-        retry_delay: int = 5
+        retry_delay: int = 3  # 从 5 秒降低到 3 秒，加快重试
     ) -> str:
         """
         调用 OpenAI API，带重试机制
@@ -83,11 +83,12 @@ class CompanyStoryGenerator:
         for attempt in range(max_retries):
             try:
                 # 使用标准 Chat Completions API
+                # 优化：降低 temperature 到 0.5 以提高速度和一致性
                 request_params = {
                     "model": self.model,
                     "messages": [{"role": "user", "content": prompt}],
                     "max_tokens": self.max_output_tokens,
-                    "temperature": 0.7
+                    "temperature": 0.5,  # 从 0.7 降低到 0.5，更快且更一致
                 }
                 
                 # 尝试添加 reasoning 参数（如果模型支持）

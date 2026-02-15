@@ -73,10 +73,15 @@ async def generate_story(request: GenerateRequest):
         company_identifier = ticker or name
         
         # 创建生成器
+        # 优化：使用更快的模型作为默认（如果未指定）
+        default_model = os.getenv("OPENAI_MODEL", "gpt-4o")
+        # 如果使用 gpt-4o，可以考虑使用 gpt-4o-mini 作为更快选项
+        # 但为了保持质量，默认仍使用 gpt-4o
+        
         generator = CompanyStoryGenerator(
             api_key=os.getenv("OPENAI_API_KEY"),
-            model=os.getenv("OPENAI_MODEL", "gpt-4o"),
-            max_output_tokens=request.max_output_tokens,
+            model=default_model,
+            max_output_tokens=min(request.max_output_tokens, 12000),  # 限制最大 tokens，加快生成
             enable_web_search=request.enable_web_search,
             market_days=90,
             use_cache=request.use_cache

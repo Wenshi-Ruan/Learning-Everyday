@@ -7,7 +7,12 @@
 import { NextRequest, NextResponse } from 'next/server'
 
 // 从环境变量获取 API URL，如果没有设置则使用默认值
-const API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:8000'
+// 确保使用 HTTPS（移除 http:// 前缀，添加 https://）
+let API_URL = process.env.NEXT_PUBLIC_API_URL || process.env.API_URL || 'http://localhost:8000'
+// 如果是生产环境且 URL 是 HTTP，强制转换为 HTTPS
+if (API_URL.startsWith('http://') && process.env.VERCEL) {
+  API_URL = API_URL.replace('http://', 'https://')
+}
 
 export async function POST(request: NextRequest) {
   try {
@@ -33,8 +38,8 @@ export async function POST(request: NextRequest) {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(body),
-      // 设置超时
-      signal: AbortSignal.timeout(300000), // 5 分钟超时
+      // 设置超时（优化：增加到 6 分钟，给生成更多时间）
+      signal: AbortSignal.timeout(360000), // 6 分钟超时
     })
 
     if (!response.ok) {

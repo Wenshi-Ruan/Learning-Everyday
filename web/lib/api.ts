@@ -1,8 +1,7 @@
 /**
- * API 客户端：调用 FastAPI 后端生成公司故事
+ * API 客户端：调用 Next.js API Route 生成公司故事
+ * API Route 会代理调用 FastAPI 后端
  */
-
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000';
 
 export interface GenerateRequest {
   company_input: string;
@@ -24,11 +23,13 @@ export interface GenerateResponse {
 
 /**
  * 生成公司故事
+ * 使用 Next.js API Route 作为代理，避免 CORS 问题和 localhost 访问问题
  */
 export async function generateCompanyStory(
   request: GenerateRequest
 ): Promise<GenerateResponse> {
-  const response = await fetch(`${API_URL}/generate`, {
+  // 使用相对路径调用 Next.js API Route
+  const response = await fetch('/api/generate', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
@@ -37,13 +38,13 @@ export async function generateCompanyStory(
       company_input: request.company_input,
       use_cache: request.use_cache ?? true,
       enable_web_search: request.enable_web_search ?? false,
-      max_output_tokens: request.max_output_tokens ?? 16000,
+      max_output_tokens: request.max_output_tokens ?? 12000,  // 优化：从 16000 降低到 12000，加快生成
     }),
   });
 
   if (!response.ok) {
-    const error = await response.json().catch(() => ({ detail: '生成失败' }));
-    throw new Error(error.detail || '生成失败');
+    const errorData = await response.json().catch(() => ({ error: '生成失败' }));
+    throw new Error(errorData.error || errorData.detail || '生成失败');
   }
 
   return response.json();
