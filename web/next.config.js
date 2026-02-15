@@ -5,6 +5,10 @@ const nextConfig = {
   reactStrictMode: true,
   // 注意：环境变量会自动从 process.env 读取，不需要在 config 中声明
   // 在 Vercel Dashboard 中设置环境变量即可
+  typescript: {
+    // 在生产构建时忽略类型错误（可选，但建议修复类型错误）
+    ignoreBuildErrors: false,
+  },
   // Webpack 配置：确保路径别名正确解析
   // 当 Root Directory 设置为 'web' 时，process.cwd() 就是 web/ 目录
   webpack: (config) => {
