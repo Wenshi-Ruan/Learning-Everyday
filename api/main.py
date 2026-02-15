@@ -18,13 +18,10 @@ from utils import normalize_ticker_or_name
 app = FastAPI(title="Company Story Generator API")
 
 # CORS 配置
+# 允许所有来源（生产环境建议限制为特定域名）
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "http://localhost:3000",
-        "https://*.vercel.app",
-        "https://*.vercel.sh",  # Vercel 预览环境
-    ],
+    allow_origins=["*"],  # 允许所有来源，避免 CORS 问题
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
