@@ -37,3 +37,4 @@
 
 设置 Root Directory 为 `web` 后，重新部署应该成功。
 
+

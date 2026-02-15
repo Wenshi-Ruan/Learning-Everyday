@@ -50,3 +50,4 @@ A: 因为代码在 `web/` 目录下，Vercel 默认在根目录构建，找不�
 **Q: vercel.json 中的路径为什么不需要 `cd web`？**
 A: 因为 Root Directory 设置为 `web` 后，Vercel 已经在 `web/` 目录下执行命令了。
 
+

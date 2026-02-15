@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { createClient } from '@/lib/supabase/client'
+import { createClient } from '../../lib/supabase/client'
 // 直接使用 Supabase 客户端
 import { format, subDays } from 'date-fns'
 

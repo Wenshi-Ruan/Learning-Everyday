@@ -2,7 +2,7 @@
 
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { generateCompanyStory } from '@/lib/api'
+import { generateCompanyStory } from '../lib/api'
 
 export default function HomePage() {
   const [input, setInput] = useState('')

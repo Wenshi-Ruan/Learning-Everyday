@@ -2,11 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useParams, useRouter } from 'next/navigation'
-import { generateCompanyStory, parseArticleSections } from '@/lib/api'
-import { createClient } from '@/lib/supabase/client'
-// 注意：db.ts 中的函数需要在 Server Component 中使用
-// 这里改为客户端调用 Supabase 直接操作
-import { createClient } from '@/lib/supabase/client'
+import { generateCompanyStory, parseArticleSections } from '../../../lib/api'
+import { createClient } from '../../../lib/supabase/client'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 import { format } from 'date-fns'

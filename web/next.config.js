@@ -3,18 +3,20 @@ const path = require('path')
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  env: {
-    NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
-    NEXT_PUBLIC_SUPABASE_ANON_KEY: process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY,
-    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:8000',
-  },
-  // 确保路径别名正确解析（Root Directory 设置为 web 时）
-  webpack: (config, { isServer }) => {
-    const alias = {
+  // 注意：环境变量会自动从 process.env 读取，不需要在 config 中声明
+  // 在 Vercel Dashboard 中设置环境变量即可
+  // Webpack 配置：确保路径别名正确解析
+  // 当 Root Directory 设置为 'web' 时，process.cwd() 就是 web/ 目录
+  webpack: (config) => {
+    const rootDir = process.cwd()
+    config.resolve.alias = {
       ...config.resolve.alias,
-      '@': path.resolve(process.cwd()),
+      '@': rootDir,
     }
-    config.resolve.alias = alias
+    // 调试信息（生产环境不会显示）
+    if (process.env.NODE_ENV === 'development') {
+      console.log('Webpack alias @ resolved to:', rootDir)
+    }
     return config
   },
 }
