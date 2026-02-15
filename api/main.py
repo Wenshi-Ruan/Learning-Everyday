@@ -10,9 +10,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import uvicorn
 
-# 添加父目录到路径，以便导入核心代码
-sys.path.insert(0, str(Path(__file__).parent.parent))
-
+# 导入核心代码（现在在同一目录下）
 from company_story import CompanyStoryGenerator
 from utils import normalize_ticker_or_name
 
