@@ -14,6 +14,7 @@ import uvicorn
 from company_story import CompanyStoryGenerator
 from utils import normalize_ticker_or_name
 
+# FastAPI 应用实例 - 必须在顶层定义以便 Railpack 自动检测
 app = FastAPI(title="Company Story Generator API")
 
 # CORS 配置
@@ -106,7 +107,11 @@ async def generate_story(request: GenerateRequest):
         raise HTTPException(status_code=500, detail=f"生成失败: {str(e)}")
 
 
+# Railway 会自动运行这个文件，所以确保可以直接执行
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
     uvicorn.run(app, host="0.0.0.0", port=port)
+else:
+    # 确保 app 可以被导入
+    pass
 
