@@ -14,7 +14,7 @@ from openai import OpenAI
 from pydantic import ValidationError
 
 from schemas import FactPack
-from prompts import WRITER_PROMPT_TEMPLATE, FACT_PACK_PROMPT
+from prompts import WRITER_PROMPT_TEMPLATE, WRITER_PROMPT_TEMPLATE_EN, FACT_PACK_PROMPT
 from utils import (
     normalize_ticker_or_name,
     get_output_paths,
@@ -66,7 +66,7 @@ class CompanyStoryGenerator:
         prompt: str,
         tools: Optional[list] = None,
         max_retries: int = 3,
-        retry_delay: int = 5
+        retry_delay: int = 3  # 从 5 秒降低到 3 秒，加快重试
     ) -> str:
         """
         调用 OpenAI API，带重试机制
@@ -83,11 +83,12 @@ class CompanyStoryGenerator:
         for attempt in range(max_retries):
             try:
                 # 使用标准 Chat Completions API
+                # 优化：降低 temperature 到 0.5 以提高速度和一致性
                 request_params = {
                     "model": self.model,
                     "messages": [{"role": "user", "content": prompt}],
                     "max_tokens": self.max_output_tokens,
-                    "temperature": 0.7
+                    "temperature": 0.5,  # 从 0.7 降低到 0.5，更快且更一致
                 }
                 
                 # 尝试添加 reasoning 参数（如果模型支持）
@@ -434,17 +435,18 @@ class CompanyStoryGenerator:
         # 如果都失败，返回原文本（让调用者处理错误）
         return response_text
     
-    def generate_article(self, factpack: FactPack) -> str:
+    def generate_article(self, factpack: FactPack, language: str = 'zh') -> str:
         """
         基于 Fact Pack 生成文章
         
         Args:
             factpack: FactPack 对象
+            language: 语言代码 ('zh' 或 'en')
             
         Returns:
             Markdown 格式的文章
         """
-        print("正在生成文章...")
+        print(f"正在生成文章（语言：{language}）...")
         
         # 将 FactPack 转换为 JSON 字符串
         factpack_json = json.dumps(
@@ -453,8 +455,16 @@ class CompanyStoryGenerator:
             indent=2
         )
         
+        # 根据语言选择提示词模板
+        if language == 'en':
+            # 英文提示词
+            prompt_template = WRITER_PROMPT_TEMPLATE_EN
+        else:
+            # 中文提示词（默认）
+            prompt_template = WRITER_PROMPT_TEMPLATE
+        
         # 构建提示词
-        prompt = WRITER_PROMPT_TEMPLATE.format(factpack_json=factpack_json)
+        prompt = prompt_template.format(factpack_json=factpack_json)
         
         # 调用 API（文章生成不需要 web_search）
         try:
@@ -464,8 +474,8 @@ class CompanyStoryGenerator:
             raise
         
         # 确保文章末尾包含 Sources 章节
-        if "## Sources" not in article and "## 来源" not in article:
-            sources_section = format_sources_section(factpack.sources)
+        sources_section = format_sources_section(factpack.sources, language=language)
+        if (language == 'en' and "## Sources" not in article) or (language == 'zh' and "## 来源" not in article and "## Sources" not in article):
             article = article.rstrip() + "\n\n" + sources_section
         
         print("✓ 文章生成完成")
@@ -474,7 +484,8 @@ class CompanyStoryGenerator:
     def generate(
         self,
         company_input: str,
-        use_cache: Optional[bool] = None
+        use_cache: Optional[bool] = None,
+        language: str = 'zh'
     ) -> tuple:
         """
         完整生成流程：Fact Pack + Article
@@ -482,6 +493,7 @@ class CompanyStoryGenerator:
         Args:
             company_input: 公司名或股票代码
             use_cache: 是否使用缓存
+            language: 语言代码 ('zh' 或 'en')
             
         Returns:
             (article_markdown, factpack) 元组
@@ -489,8 +501,8 @@ class CompanyStoryGenerator:
         # 阶段 1: 生成 Fact Pack
         factpack = self.generate_fact_pack(company_input, use_cache=use_cache)
         
-        # 阶段 2: 生成文章
-        article = self.generate_article(factpack)
+        # 阶段 2: 生成文章（传递语言参数）
+        article = self.generate_article(factpack, language=language)
         
         return (article, factpack)
 

@@ -52,3 +52,4 @@ import { createClient } from '../../lib/supabase/client'
 4. ✅ 检查构建日志中的 commit hash 是否为最新
 
 
+

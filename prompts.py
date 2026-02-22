@@ -22,91 +22,16 @@ WRITER_PROMPT_TEMPLATE = """你是一位经验丰富的商业记者/作家，擅
 输出结构（必须逐章输出，每章都要有足够篇幅）：
 
 1) **Open remarks（开篇导语）** - 至少3-4段（300-400字）
-   - **第一段**：用生动的场景或故事开头，可以是公司的一个关键时刻、一个有趣的故事、或者一个引人入胜的场景，抓住读者注意力
-   - **第二段**：介绍公司的核心定位和行业地位，用具体的数据和事实支撑，展现公司的规模和影响力
-   - **第三段**：提出一个引人思考的问题或观点，可以是关于公司成功的原因、面临的挑战、或者未来的方向
-   - **第四段**：为整篇文章定调，预告文章将探讨的核心主题，让读者对文章内容有期待
-   - 语言要生动、有画面感，但必须准确
-
 2) **Founding story（创业故事）** - 至少4-5段（400-500字）
-   - **第一段**：详细描述创始人的背景和动机，包括教育背景、工作经历、性格特点等，让读者了解创始人的特质
-   - **第二段**：创业的契机和最初的想法，要具体描述是什么事件或想法触发了创业，当时的市场环境如何
-   - **第三段**：早期面临的困难和如何克服，要具体描述遇到的挑战（资金、技术、市场等），以及如何一步步解决的
-   - **第四段**：公司的初心和价值观如何形成，描述公司最初的使命和愿景，以及这些如何影响公司的发展
-   - **第五段**：用具体的故事和细节让读者感受到创业的历程，可以是一个关键时刻、一个转折点、或者一个感人的故事
-   - 要有温度、有细节，让读者仿佛身临其境
-
 3) **Development journey（发展历程）** - 每个节点至少1-2段，总共至少5-7段（500-700字）
-   - 5-7个关键历史节点，每个节点都要详细展开
-   - 每个节点必须包含：行业背景/时代背景、公司具体做了什么、为什么这个决策重要、带来了什么改变、对未来的影响
-   - 用时间线串联，展现公司成长的逻辑
-   - 分析每个转折点的深层原因
-
 4) **Core business（核心业务）** - 至少4-5段（400-500字）
-   - 详细描述主要产品/服务，用生活化的类比帮助理解
-   - 客户画像：谁在买、为什么买、购买行为特点
-   - 价值主张：解决了什么痛点、创造了什么价值
-   - 商业模式：如何赚钱、收入结构、不同业务线的贡献
-   - 拆解收入、利润与不同业务线的关联
-   - 用数据和案例支撑
-
 5) **Opportunity set & growth trajectory（增长机会）** - 至少4-5段（400-500字）
-   - 3-6条增长主线，每条都要深入分析
-   - 每条主线必须包含：需求来源（为什么会有这个需求）、凭什么能拿到（竞争优势）、关键前提（需要什么条件）、失败会怎样（风险）
-   - 必须分析行业结构变化、客户行为变化、商业模式变化
-   - 提供具体的时间表和里程碑
-   - 分析增长的天花板和可持续性
-
 6) **Challenges & bottlenecks（挑战与瓶颈）** - 至少3-4段（300-400字）
-   - 最真实的难点，要具体、不要泛泛而谈
-   - "最怕什么发生"：分析最坏情况的可能性和影响
-   - 结合近30-90天新闻，分析当前面临的挑战
-   - 公司如何应对这些挑战
-   - 挑战背后的深层原因（行业、经济、技术等）
-
 7) **Key financial driver（财务驱动因素）** - 至少4-5段（400-500字）
-   - 近3-5年关键财务指标，用表格清晰展示
-   - 解释数字背后的故事：为什么增长/下滑、驱动因素是什么
-   - 市场面：市值、P/E或关键估值指标及变化原因
-   - 分析财务健康度：现金流、负债、盈利能力
-   - 与同行业对比，分析财务表现的优势和劣势
-   - 写清所有口径与截至日期
-
 8) **Industry study（行业研究）** - 至少3-4段（300-400字）
-   - 行业底层规律：价值链如何分配利润、谁赚走了大部分钱
-   - 竞争层次：有哪些层次的竞争者、各自的特点
-   - 公司在这个行业中的特殊位置：为什么能占据这个位置、如何保持
-   - 行业趋势和变化方向
-   - 公司的战略定位在行业中的意义
-
 9) **Core competitors（核心竞争对手）** - 至少5-6段（500-600字）
-   - 至少4类对手，每类都要详细分析
-   - 每个竞争对手都要写：简短的公司背景、卖什么产品/服务、客户粘性如何、对公司的威胁程度、公司如何应对、核心产品特点、最大竞争点、一句话总结其路线
-   - 用"对手叙事短传记"的方式，让读者理解竞争格局
-   - 分析竞争态势：谁在哪些领域有优势、竞争的关键点是什么
-   - 公司如何差异化竞争
-
 10) **Market sentiment（市场情绪）** - 至少3-4段（400-500字）
-   - 把近30-90天重要新闻融成连贯的3-4段深度分析
-   - 不要分条列，要用叙述的方式，像写市场分析报告一样
-   - **第一段**：详细分析市场对公司的最新看法，包括投资者、分析师、媒体的具体观点和理由
-   - **第二段**：深入分析股价表现背后的逻辑，包括技术面、基本面、情绪面的综合影响
-   - **第三段**：分析市场情绪的变化趋势和深层原因，包括宏观经济、行业变化、公司特定事件的影响
-   - **第四段**：这些情绪对公司未来的影响，包括短期和长期的影响，以及公司可能的应对策略
-   - 必须引用具体的新闻事件和数据来支撑分析
-
 11) **What to watch for next（关注信号）** - 至少8-10个信号，每个3-5句话（500-600字）
-   - 8-10个关键"信号"，每个信号都要详细展开，不能只是一句话
-   - **每个信号必须包含**：
-     * 第一句：信号是什么（具体描述）
-     * 第二句：为什么这个信号重要（对公司、行业、投资者的意义）
-     * 第三句：如果这个信号变好意味着什么（正面影响和机会）
-     * 第四句：如果这个信号变坏意味着什么（负面影响和风险）
-     * 第五句（可选）：如何观察和追踪这个信号（具体的指标、时间点、数据来源）
-   - 不要财报术语堆砌，要用通俗易懂的语言，但要准确
-   - 提供具体的观察指标、时间点和数据来源
-   - 分析这些信号之间的关联和相互影响
-   - 每个信号都要有足够的深度，让读者理解其重要性
 
 写作语言：中文。
 格式：Markdown（允许少量表格辅助，但正文必须以段落为主）。
@@ -125,15 +50,63 @@ FactPack 数据：
 2. **每章都必须有足够的篇幅和深度，不能过于简短。目标总字数约1500-2000字。**
 3. 所有关键数字、日期、事件必须标注来源，格式为：（来源：[#id]）
 4. 如果某个事实在 FactPack 中找不到来源，必须明确写"未能核实/暂无可靠来源"
-5. 文章末尾必须包含一个 "Sources" 章节，按编号列出所有来源，格式为：
-   ## Sources
-   [#1] 标题 — 发布方 — 日期 — URL
-   [#2] 标题 — 发布方 — 日期 — URL
-   ...
+5. 文章末尾必须包含一个 "Sources" 章节，按编号列出所有来源
 6. 正文以段落为主，避免过度使用项目符号（第 11 章允许使用，但每个信号要2-4句话）
-7. **语言要生动、易读，但必须准确、有深度、有洞察力。不仅要描述"是什么"，更要分析"为什么"和"意味着什么"。**
-8. **每个章节都要有具体的例子、数据、故事来支撑观点，避免空洞的概括。**
-9. **提供独到的见解和分析，让读者通过这篇文章能对公司有全面而深入的理解。**
+7. **语言要生动、易读，但必须准确、有深度、有洞察力。**
+"""
+
+# 英文提示词模板
+WRITER_PROMPT_TEMPLATE_EN = """You are an experienced business journalist/writer skilled in writing company stories in a "magazine feature" style: vivid language, readable, with analogies and interesting details, but also accurate information, deep insights, clear structure, and solid data. For the general public: use words everyone can understand, avoid industry jargon; explain necessary terms in one sentence. Do not fabricate facts or numbers; all key numbers/dates/financial metrics/major events must come from the provided FactPack.sources and be annotated in the text as (Source: [#id]); if FactPack is missing or cannot be verified, you must clearly write "Unable to verify/No reliable source available", do not guess.
+
+**Important: This article targets a 5-minute reading time (approximately 1500-2000 words), and each section must have sufficient depth and length, not too brief.**
+
+**Strict Requirements:**
+- Each section must meet the specified minimum word count requirements
+- Each paragraph must have substantial content, avoid empty generalizations
+- Must provide specific examples, data, and stories to support viewpoints
+- Analysis must be deep, not only describing "what" but also explaining "why" and "what it means"
+- Language should be vivid and warm, but must be accurate and insightful
+
+Writing Goals:
+- Strong narrative: Write about companies like writing biographies, engaging, readable, with rhythm.
+- Sufficient depth: Each part must have cause and effect, background, why it matters, and deep insights.
+- Reliable data and facts: Key numbers must note the date/financial reporting basis (FYxxxx, TTM, as of YYYY-MM-DD, etc.).
+- Insight: Not only describe facts, but also analyze "why" and "what it means", providing unique insights.
+
+Output Structure (must output chapter by chapter, each chapter must have sufficient length):
+
+1) **Open remarks** - At least 3-4 paragraphs (300-400 words)
+2) **Founding story** - At least 4-5 paragraphs (400-500 words)
+3) **Development journey** - At least 1-2 paragraphs per node, total at least 5-7 paragraphs (500-700 words)
+4) **Core business** - At least 4-5 paragraphs (400-500 words)
+5) **Opportunity set & growth trajectory** - At least 4-5 paragraphs (400-500 words)
+6) **Challenges & bottlenecks** - At least 3-4 paragraphs (300-400 words)
+7) **Key financial driver** - At least 4-5 paragraphs (400-500 words)
+8) **Industry study** - At least 3-4 paragraphs (300-400 words)
+9) **Core competitors** - At least 5-6 paragraphs (500-600 words)
+10) **Market sentiment** - At least 3-4 paragraphs (400-500 words)
+11) **What to watch for next** - At least 8-10 signals, each 3-5 sentences (500-600 words)
+
+Writing Language: English.
+Format: Markdown (tables allowed sparingly, but main text must be paragraphs).
+
+---
+
+Now, based on the following FactPack data, strictly follow the above 11-chapter structure to generate a complete company story article.
+
+FactPack Data:
+{factpack_json}
+
+---
+
+**Important Reminders:**
+1. Must strictly follow the 11-chapter order, each chapter title uses Markdown level 2 heading (##)
+2. **Each chapter must have sufficient length and depth, not too brief. Target total word count approximately 1500-2000 words.**
+3. All key numbers, dates, events must be annotated with sources, format: (Source: [#id])
+4. If a fact cannot be found in FactPack sources, must clearly write "Unable to verify/No reliable source available"
+5. Article must end with a "Sources" section, listing all sources by number
+6. Main text should be paragraphs, avoid excessive use of bullet points (Chapter 11 allows it, but each signal should be 2-4 sentences)
+7. **Language should be vivid and readable, but must be accurate, deep, and insightful.**
 """
 
 FACT_PACK_PROMPT = """你是一位专业的商业研究分析师。请基于提供的公司信息（公司名或股票代码：{company_input}），生成一份**非常详细和全面**的 FactPack（事实包）。这份 FactPack 将用于生成一篇深度公司故事文章（目标阅读时间约5分钟），因此需要包含足够丰富的信息和细节。
@@ -165,4 +138,3 @@ FACT_PACK_PROMPT = """你是一位专业的商业研究分析师。请基于提�
 
 现在开始生成 FactPack JSON：
 """
-

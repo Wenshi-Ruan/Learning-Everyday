@@ -53,7 +53,8 @@ export default function HistoryPage() {
     }
   }
 
-  const handleClick = (item: CompanyView) => {
+  const handleClick = async (item: CompanyView) => {
+    // 如果有缓存 ID，直接跳转到公司页面（会从缓存读取）
     const slug = encodeURIComponent((item.ticker || item.company_name).toLowerCase())
     router.push(`/company/${slug}`)
   }

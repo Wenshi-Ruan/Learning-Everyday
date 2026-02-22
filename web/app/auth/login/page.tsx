@@ -11,6 +11,14 @@ export default function LoginPage() {
   const [loading, setLoading] = useState(false)
   const [message, setMessage] = useState<string | null>(null)
 
+  // 检查 URL 参数中的错误信息
+  useEffect(() => {
+    const error = searchParams.get('error')
+    if (error) {
+      setMessage(decodeURIComponent(error))
+    }
+  }, [searchParams])
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     if (!email.trim()) return

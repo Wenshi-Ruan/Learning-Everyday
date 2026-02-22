@@ -8,6 +8,7 @@ export interface GenerateRequest {
   use_cache?: boolean;
   enable_web_search?: boolean;
   max_output_tokens?: number;
+  language?: 'zh' | 'en'; // 添加语言参数
 }
 
 export interface GenerateResponse {
@@ -39,6 +40,7 @@ export async function generateCompanyStory(
       use_cache: request.use_cache ?? true,
       enable_web_search: request.enable_web_search ?? false,
       max_output_tokens: request.max_output_tokens ?? 12000,  // 优化：从 16000 降低到 12000，加快生成
+      language: request.language || 'zh', // 传递语言参数
     }),
   });
 

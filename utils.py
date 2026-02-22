@@ -144,17 +144,27 @@ def get_today_date_str() -> str:
     return date.today().strftime("%Y-%m-%d")
 
 
-def format_sources_section(sources: list) -> str:
+def format_sources_section(sources: list, language: str = 'zh') -> str:
     """
     格式化 Sources 章节的 Markdown 文本
     
     Args:
         sources: Source 对象列表或字典列表
+        language: 语言代码 ('zh' 或 'en')
         
     Returns:
         格式化的 Markdown 文本
     """
-    lines = ["## Sources", ""]
+    if language == 'en':
+        lines = ["## Sources", ""]
+        unknown_title = "Unknown Title"
+        unknown_publisher = "Unknown Publisher"
+        unknown_date = "Unknown Date"
+    else:
+        lines = ["## 来源", ""]
+        unknown_title = "未知标题"
+        unknown_publisher = "未知发布方"
+        unknown_date = "未知日期"
     
     # 按 id 排序
     sorted_sources = sorted(sources, key=lambda x: x.get('id', 0) if isinstance(x, dict) else x.id)
@@ -162,15 +172,15 @@ def format_sources_section(sources: list) -> str:
     for source in sorted_sources:
         if isinstance(source, dict):
             source_id = source.get('id', '?')
-            title = source.get('title', '未知标题')
-            publisher = source.get('publisher', '未知发布方')
-            published_date = source.get('published_date', '未知日期')
+            title = source.get('title', unknown_title)
+            publisher = source.get('publisher', unknown_publisher)
+            published_date = source.get('published_date', unknown_date)
             url = source.get('url', '#')
         else:
             source_id = getattr(source, 'id', '?')
-            title = getattr(source, 'title', '未知标题')
-            publisher = getattr(source, 'publisher', '未知发布方')
-            published_date = getattr(source, 'published_date', '未知日期') or '未知日期'
+            title = getattr(source, 'title', unknown_title)
+            publisher = getattr(source, 'publisher', unknown_publisher)
+            published_date = getattr(source, 'published_date', unknown_date) or unknown_date
             url = getattr(source, 'url', '#')
         
         line = f"[#{source_id}] {title} — {publisher} — {published_date} — {url}"
