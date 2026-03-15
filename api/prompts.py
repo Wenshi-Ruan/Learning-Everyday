@@ -34,7 +34,11 @@ WRITER_PROMPT_TEMPLATE = """你是一位经验丰富的商业记者/作家，擅
 5) **增长机会** - 至少4-5段（400-500字）
 6) **挑战与瓶颈** - 至少3-4段（300-400字）
 7) **财务驱动因素** - 先输出一个财务数据表格，再写至少3-4段分析（合计400-500字）。
-   - **表格（必须）**：用 Markdown 表格整理核心财务数据，表头为时间（最近4个季度 + 最近5个财年），行包括但不限于：营收、毛利润、毛利率、EBITDA、EBITDA 利润率、净利润、净利率、每股收益 EPS、市盈率 P/E、市净率 P/B、ROE、营收同比增速等（从 FactPack 选取有数据的指标，缺失填 "—" 或 "N/A"）。表格后空一行。
+   - **表格（必须）**：
+     - **纵轴（行）**：各指标一行，如 营收、毛利润、毛利率(%)、EBITDA、净利润、净利率(%)、每股收益(EPS)、市盈率(P/E)、市净率(P/B)、ROE、营收同比增速(%) 等（仅包含 FactPack 中有数据的指标），第一列表头为「指标」。
+     - **横轴（列）**：时间，第一列为「指标」，其余列为 最近4个季度（如 2024-Q3、2024-Q2…）+ 最近5个财年（如 FY2024、FY2023…），按时间从新到旧排列。
+     - **只保留有数据的时期**：若某季度或某年在 FactPack 中完全无数据，则不要为该时期单独设列，自动去掉该列，避免整列都是 N/A；只列出至少有一个指标有数据的时期。
+     - 表格内缺失的单元格可填 "—"。表格后空一行。
    - **段落分析（必须）**：基于表格数据写 3-4 段文字，分析收入与利润驱动因素、趋势、盈利能力与估值含义，保持传记/故事体，有洞察。
 8) **行业研究** - 至少3-4段（300-400字）
 9) **核心竞争对手** - 至少5-6段（500-600字）
@@ -56,7 +60,7 @@ FactPack 数据：
 **重要提醒：**
 1. 必须严格按照 11 章顺序输出，每章标题使用 Markdown 二级标题（##）
 2. **每章都必须有足够的篇幅和深度，不能过于简短。目标总字数约1500-2000字。**
-3. **第 7 章 Key financial driver 必须先有一个 Markdown 表格（最近4季度+5财年核心指标），再写 3-4 段分析。**
+3. **第 7 章财务驱动因素**：先有一个 Markdown 表格——纵轴=指标（一行一个），横轴=时期（最近4季度+5财年），无数据的时期列省略不写；再写 3-4 段分析。
 4. **正文中不要写任何（来源：…）或 Sources 章节；来源仅由系统在文末统一追加。**
 5. 正文以段落为主，避免过度使用项目符号（第 11 章允许使用，但每个信号要2-4句话）
 6. **文体必须是传记/故事体，生动有温度，禁止说明文、百科体。**
@@ -97,7 +101,11 @@ Output Structure (must output chapter by chapter, each chapter must have suffici
 5) **Opportunity set & growth trajectory** - At least 4-5 paragraphs (400-500 words)
 6) **Challenges & bottlenecks** - At least 3-4 paragraphs (300-400 words)
 7) **Key financial driver** - First output a financial data table, then at least 3-4 paragraphs of analysis (total 400-500 words).
-   - **Table (required)**: Use a Markdown table. Column headers = time periods (last 4 quarters + last 5 fiscal years). Rows must include, as data allows: Revenue, Gross profit, Gross margin %, EBITDA, EBITDA margin %, Net income, Net margin %, EPS, P/E ratio, P/B ratio, ROE, Revenue growth YoY %, and other key ratios (use only metrics present in FactPack; use "—" or "N/A" for missing). Leave one blank line after the table.
+   - **Table (required)**:
+     - **Rows (vertical axis)**: One row per metric, e.g. Revenue, Gross profit, Gross margin %, EBITDA, Net income, Net margin %, EPS, P/E, P/B, ROE, Revenue growth YoY %, etc. (only include metrics that have data in FactPack). First column header is "Metric".
+     - **Columns (horizontal axis)**: First column = "Metric"; remaining columns = time periods: last 4 quarters (e.g. 2024-Q3, 2024-Q2…) then last 5 fiscal years (e.g. FY2024, FY2023…), newest to oldest.
+     - **Include only periods with data**: If a quarter or year has no data in FactPack, do not add a column for it; omit that period so the table has no columns full of N/A. Only list periods that have at least one metric with data.
+     - Use "—" for missing cells. Leave one blank line after the table.
    - **Paragraph analysis (required)**: Write 3-4 paragraphs interpreting the table: revenue and profit drivers, trends, profitability and valuation implications, in narrative style with insight.
 8) **Industry study** - At least 3-4 paragraphs (300-400 words)
 9) **Core competitors** - At least 5-6 paragraphs (500-600 words)
@@ -119,7 +127,7 @@ FactPack Data:
 **Important Reminders:**
 1. Must strictly follow the 11-chapter order, each chapter title uses Markdown level 2 heading (##)
 2. **Each chapter must have sufficient length and depth, not too brief. Target total word count approximately 1500-2000 words.**
-3. **Chapter 7 Key financial driver must start with one Markdown table (last 4 quarters + 5 fiscal years, key metrics), then 3-4 paragraphs of analysis.**
+3. **Chapter 7 Key financial driver**: One Markdown table first—rows = metrics (one per row), columns = time periods (last 4 quarters + 5 years); omit period columns that have no data; then 3-4 paragraphs of analysis.
 4. **Do not write any (Source: …) in the body or output a Sources section; sources will be appended at the end by the system.**
 5. Main text should be paragraphs, avoid excessive use of bullet points (Chapter 11 allows it, but each signal should be 2-4 sentences)
 6. **Style must be narrative/biographical, vivid and warm; avoid expository or encyclopedic tone.**
