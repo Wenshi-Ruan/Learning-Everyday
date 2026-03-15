@@ -25,23 +25,23 @@ WRITER_PROMPT_TEMPLATE = """你是一位经验丰富的商业记者/作家，擅
 - **不要**在文末自己写"## 来源"或"## Sources"章节；系统会在文章最下方自动追加来源列表。
 - 若某事实无法从 FactPack 核实，可写"暂无公开数据"或一笔带过，勿编造。
 
-输出结构（必须逐章输出，每章都要有足够篇幅）：
+输出结构（必须逐章输出，每章都要有足够篇幅）。**章节标题只用中文**（禁止中英双语，例如禁止写 "Industry study（行业研究）"），用 ## 加中文标题：
 
-1) **Open remarks（开篇导语）** - 至少3-4段（300-400字）
-2) **Founding story（创业故事）** - 至少4-5段（400-500字）
-3) **Development journey（发展历程）** - 每个节点至少1-2段，总共至少5-7段（500-700字）
-4) **Core business（核心业务）** - 至少4-5段（400-500字）
-5) **Opportunity set & growth trajectory（增长机会）** - 至少4-5段（400-500字）
-6) **Challenges & bottlenecks（挑战与瓶颈）** - 至少3-4段（300-400字）
-7) **Key financial driver（财务驱动因素）** - 先输出一个财务数据表格，再写至少3-4段分析（合计400-500字）。
-   - **表格（必须）**：用 Markdown 表格整理核心财务数据，表头为时间（最近4个季度 + 最近5个财年），行包括但不限于：营收 Revenue、毛利润 Gross profit、毛利率 Gross margin %、EBITDA、EBITDA 利润率 %、净利润 Net income、净利率 Net margin %、每股收益 EPS、市盈率 P/E、市净率 P/B、净资产收益率 ROE、营收同比增速 Revenue growth YoY % 等（可从 FactPack 中选取有数据的指标，缺失填 "—" 或 "N/A"）。表格后空一行。
+1) **开篇导语** - 至少3-4段（300-400字）
+2) **创业故事** - 至少4-5段（400-500字）
+3) **发展历程** - 每个节点至少1-2段，总共至少5-7段（500-700字）
+4) **核心业务** - 至少4-5段（400-500字）
+5) **增长机会** - 至少4-5段（400-500字）
+6) **挑战与瓶颈** - 至少3-4段（300-400字）
+7) **财务驱动因素** - 先输出一个财务数据表格，再写至少3-4段分析（合计400-500字）。
+   - **表格（必须）**：用 Markdown 表格整理核心财务数据，表头为时间（最近4个季度 + 最近5个财年），行包括但不限于：营收、毛利润、毛利率、EBITDA、EBITDA 利润率、净利润、净利率、每股收益 EPS、市盈率 P/E、市净率 P/B、ROE、营收同比增速等（从 FactPack 选取有数据的指标，缺失填 "—" 或 "N/A"）。表格后空一行。
    - **段落分析（必须）**：基于表格数据写 3-4 段文字，分析收入与利润驱动因素、趋势、盈利能力与估值含义，保持传记/故事体，有洞察。
-8) **Industry study（行业研究）** - 至少3-4段（300-400字）
-9) **Core competitors（核心竞争对手）** - 至少5-6段（500-600字）
-10) **Market sentiment（市场情绪）** - 至少3-4段（400-500字）
-11) **What to watch for next（关注信号）** - 至少8-10个信号，每个3-5句话（500-600字）
+8) **行业研究** - 至少3-4段（300-400字）
+9) **核心竞争对手** - 至少5-6段（500-600字）
+10) **市场情绪** - 至少3-4段（400-500字）
+11) **关注信号** - 至少8-10个信号，每个3-5句话（500-600字）
 
-写作语言：全文中文，每小节内仅用中文。
+写作语言：全文中文，每小节内仅用中文。**所有 ## 标题必须仅为中文，不得出现英文或中英双语标题。**
 格式：Markdown（允许少量表格辅助，但正文必须以段落为主）。
 
 ---
@@ -61,6 +61,7 @@ FactPack 数据：
 5. 正文以段落为主，避免过度使用项目符号（第 11 章允许使用，但每个信号要2-4句话）
 6. **文体必须是传记/故事体，生动有温度，禁止说明文、百科体。**
 7. **每一小节只用一种语言（此处为中文），不要中英混杂。**
+8. **章节标题只用中文**：例如写 ## 行业研究，禁止写 ## Industry study（行业研究）或中英双语标题。
 """
 
 # 英文提示词模板
@@ -87,7 +88,7 @@ Writing Goals:
 - Do **not** output a "## Sources" or "## 来源" section at the end; the system will append the source list at the bottom automatically.
 - If a fact cannot be verified from FactPack, write "no public data available" or skip briefly; do not invent.
 
-Output Structure (must output chapter by chapter, each chapter must have sufficient length):
+Output Structure (must output chapter by chapter, each chapter must have sufficient length). **Section titles in English only** (no bilingual titles like "Industry study（行业研究）"); use ## followed by the English title only:
 
 1) **Open remarks** - At least 3-4 paragraphs (300-400 words)
 2) **Founding story** - At least 4-5 paragraphs (400-500 words)
@@ -103,7 +104,7 @@ Output Structure (must output chapter by chapter, each chapter must have suffici
 10) **Market sentiment** - At least 3-4 paragraphs (400-500 words)
 11) **What to watch for next** - At least 8-10 signals, each 3-5 sentences (500-600 words)
 
-Writing Language: English only for the whole article; each subsection must be in one language (here: English).
+Writing Language: English only for the whole article. **All ## headings must be in English only; no Chinese or bilingual headings.**
 Format: Markdown (tables allowed sparingly, but main text must be paragraphs).
 
 ---
@@ -123,15 +124,21 @@ FactPack Data:
 5. Main text should be paragraphs, avoid excessive use of bullet points (Chapter 11 allows it, but each signal should be 2-4 sentences)
 6. **Style must be narrative/biographical, vivid and warm; avoid expository or encyclopedic tone.**
 7. **Use only one language per section (here: English); do not mix languages within a section.**
+8. **Section titles in English only**: e.g. use ## Industry study, not ## Industry study（行业研究）or any bilingual title.
 """
 
 FACT_PACK_PROMPT = """你是一位专业的商业研究分析师。请基于提供的公司信息（公司名或股票代码：{company_input}），生成一份**非常详细和全面**的 FactPack（事实包）。这份 FactPack 将用于生成一篇**传记式、故事化**的公司文章（目标阅读时间约5分钟），因此需要包含足够丰富的信息、细节和叙事素材（创始人故事、里程碑、轶事、行业背景等），而不仅是干巴巴的数据条目。
 
 **重要要求：**
-1. 如果启用了 web_search，**必须充分使用搜索**：多次、多关键词搜索，覆盖公司概况、财报、创始人、发展历程、竞争对手、近期新闻、行业分析等。对于**中国/香港上市或国际非美股公司**（例如小米 Xiaomi、华为、比亚迪、宁德时代等），必须额外用中英文多种关键词搜索（如：公司名 + 财报、创始人、发展历程、竞争对手、最新新闻、annual report、founder、competitors、IPO、战略），以获取足够多的资料来支撑故事化写作，避免因资料来源单一而写成说明文。
+1. 如果启用了 web_search，**必须充分、穷尽式使用搜索**：多次、多关键词、多数据源搜索。在返回任何财务字段为 N/A 或 null 之前，**必须先**从以下类型的信息源尝试获取数据：
+   - **金融/行情数据站**：Yahoo Finance（如 "Tencent Yahoo Finance"、"公司名 + stock financials"）、Bloomberg、Reuters、Morningstar、东方财富、同花顺等；
+   - **公司官方**：公司投资者关系页、annual report、quarterly earnings、财报摘要；
+   - **交易所/监管**：港交所披露、SEC、公司公告；
+   - **中文/本地**：公司中文名 + 财报、年报、季报、营收、净利润（如 腾讯 财报、腾讯 年报）。
+   对**中国/香港/国际非美股公司**（如腾讯 Tencent、小米、阿里巴巴、比亚迪等），必须用**中英文多种关键词**分别搜索（如 Tencent 0700.HK financials、Tencent revenue earnings、腾讯 营收 净利润、腾讯 年报），**只有在上述来源均无法找到对应数据时**才可在 FactPack 中填 null 或 N/A，否则一律填入从可靠来源获取的数值并标注 source_id。
 2. 如果未启用 web_search，请基于你的知识库生成，但必须明确标注"可能过时"并生成建议搜索的关键词
 3. 所有关键数字和事实必须标注来源（URL、标题、发布日期、访问日期）
-4. **财务数据必须便于「Key financial driver」章节制表**：包含**最近 4 个季度**和**最近 5 个财年**的以下指标（如可获取）：营收 Revenue、毛利润 Gross profit、毛利率、EBITDA、净利润 Net income、净利率、EPS、经营现金流；估值/比率：市盈率 P/E、市净率 P/B、ROE、ROA、营收同比增速等。年度与季度数据均需标注财年或报告期（如 FY2023、2024-Q2），便于文章中的表格填写。
+4. **财务数据必须便于「Key financial driver」章节制表**：包含**最近 4 个季度**和**最近 5 个财年**的以下指标，**优先从 Yahoo Finance、公司 IR、交易所披露等获取**：营收 Revenue、毛利润 Gross profit、毛利率、EBITDA、净利润 Net income、净利率、EPS、经营现金流；估值/比率：市盈率 P/E、市净率 P/B、ROE、ROA、营收同比增速等。年度与季度数据均需标注财年或报告期（如 FY2023、2024-Q2）。**在穷尽上述搜索前不要将财务指标设为 N/A。**
 5. 新闻时间窗口：近 {market_days} 天，需要包含**详细的事件描述和影响分析**
 6. **时间线必须包含 5-7 个关键历史节点，每个节点都要有详细的背景、事件、影响描述**（便于写成故事线）
 7. **竞争对手至少 4 类，每类 2-5 个代表，每个竞争对手都要有详细的描述**（产品、市场定位、优势、威胁等）
@@ -150,6 +157,7 @@ FACT_PACK_PROMPT = """你是一位专业的商业研究分析师。请基于提�
 - sources 列表中的每条必须包含：id、title、url、publisher、published_date（如可获取）、accessed_date（今天日期：{today_date}）、used_for（被引用到的字段列表）
 - 如果某个信息无法找到可靠来源，在相应字段中写 null 或空数组，但不要编造
 - 财务数据必须标注财年、截至日期、口径（GAAP/Non-GAAP）
+- **财务指标（revenue、net_income、EPS、P/E 等）**：必须先通过 web_search 查询 Yahoo Finance、公司财报、交易所披露等来源；只有确实无法从这些渠道获取时才能填 null/N/A，否则必须填入查到的数据并注明 source_id
 - 估值信息如果无法可靠获取，在 note 字段中说明原因
 
 现在开始生成 FactPack JSON：

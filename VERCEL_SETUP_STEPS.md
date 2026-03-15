@@ -1,5 +1,17 @@
 # Vercel 设置步骤（必须完成）
 
+## 推送代码到 GitHub（每次改代码后要做）
+
+改完代码后需推送到 GitHub，Vercel 才会用新版本部署。在项目根目录运行：
+
+```bash
+./push-to-github.sh "你的提交说明"
+```
+
+或手动：`git add -A` → `git commit -m "说明"` → `git push origin main`。详见 **PUSH_TO_GITHUB.md**。
+
+---
+
 ## ✅ 环境变量已配置（很好！）
 
 从截图看，你的环境变量已经正确设置：
