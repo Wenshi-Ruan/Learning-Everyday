@@ -11,17 +11,33 @@ export function Nav() {
   const [user, setUser] = useState<User | null>(null)
   const [loading, setLoading] = useState(true)
 
-  useEffect(() => {
+  const refreshUser = () => {
     const supabase = createClient()
-    
     supabase.auth.getUser().then(({ data: { user } }) => {
       setUser(user)
       setLoading(false)
     })
+  }
 
-    supabase.auth.onAuthStateChange((_event, session) => {
+  useEffect(() => {
+    refreshUser()
+    const supabase = createClient()
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null)
     })
+    return () => subscription.unsubscribe()
+  }, [])
+
+  // Re-check session when pathname changes (e.g. after redirect from auth callback)
+  useEffect(() => {
+    refreshUser()
+  }, [pathname])
+
+  // Re-check when window regains focus (e.g. after magic link in same tab)
+  useEffect(() => {
+    const onFocus = () => refreshUser()
+    window.addEventListener('focus', onFocus)
+    return () => window.removeEventListener('focus', onFocus)
   }, [])
 
   const handleSignOut = async () => {
@@ -66,19 +82,36 @@ export function Nav() {
             {loading ? (
               <div className="w-20 h-6 bg-muted animate-pulse rounded" />
             ) : user ? (
-              <button
-                onClick={handleSignOut}
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                退出
-              </button>
+              <>
+                <Link
+                  href="/profile"
+                  className="text-sm text-muted-foreground hover:text-foreground truncate max-w-[140px] sm:max-w-[200px]"
+                  title={user.email ?? undefined}
+                >
+                  {user.user_metadata?.full_name || user.email || '账户'}
+                </Link>
+                <button
+                  onClick={handleSignOut}
+                  className="text-sm text-muted-foreground hover:text-foreground whitespace-nowrap"
+                >
+                  退出
+                </button>
+              </>
             ) : (
-              <Link
-                href="/auth/login"
-                className="text-sm text-muted-foreground hover:text-foreground"
-              >
-                登录
-              </Link>
+              <>
+                <Link
+                  href="/auth/register"
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  注册
+                </Link>
+                <Link
+                  href="/auth/login"
+                  className="text-sm text-muted-foreground hover:text-foreground"
+                >
+                  登录
+                </Link>
+              </>
             )}
           </div>
         </div>

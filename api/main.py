@@ -31,7 +31,7 @@ app.add_middleware(
 class GenerateRequest(BaseModel):
     company_input: str
     use_cache: bool = True
-    enable_web_search: bool = False
+    enable_web_search: bool = True
     max_output_tokens: int = 16000
     language: str = 'zh'  # 添加语言参数，默认中文
 

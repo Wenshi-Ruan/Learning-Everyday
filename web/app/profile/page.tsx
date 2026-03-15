@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 import { createClient } from '../../lib/supabase/client'
-// 直接使用 Supabase 客户端
 import { format, subDays } from 'date-fns'
 
 export default function ProfilePage() {
@@ -16,6 +16,14 @@ export default function ProfilePage() {
     streak: 0,
     recent7Days: 0,
   })
+  const [passwordSection, setPasswordSection] = useState(false)
+  const [newPassword, setNewPassword] = useState('')
+  const [confirmPassword, setConfirmPassword] = useState('')
+  const [passwordMessage, setPasswordMessage] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [passwordLoading, setPasswordLoading] = useState(false)
+  const [displayName, setDisplayName] = useState('')
+  const [displayNameSaving, setDisplayNameSaving] = useState(false)
+  const [displayNameMessage, setDisplayNameMessage] = useState<string | null>(null)
 
   useEffect(() => {
     loadData()
@@ -31,7 +39,8 @@ export default function ProfilePage() {
     }
 
     setUser(user)
-    
+    setDisplayName((user as any).user_metadata?.full_name ?? '')
+
     try {
       const supabase = createClient()
       
@@ -85,6 +94,64 @@ export default function ProfilePage() {
     }
   }
 
+  const handleSaveDisplayName = async (e: React.FormEvent) => {
+    e.preventDefault()
+    if (!user) return
+    setDisplayNameSaving(true)
+    setDisplayNameMessage(null)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.updateUser({
+        data: { full_name: displayName.trim() || undefined },
+      })
+      if (error) {
+        setDisplayNameMessage(error.message)
+        setDisplayNameSaving(false)
+        return
+      }
+      setUser((u: any) => (u ? { ...u, user_metadata: { ...u.user_metadata, full_name: displayName.trim() } } : u))
+      setDisplayNameMessage('已保存')
+    } catch (err) {
+      setDisplayNameMessage(err instanceof Error ? err.message : '保存失败')
+    } finally {
+      setDisplayNameSaving(false)
+    }
+  }
+
+  const handleChangePassword = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setPasswordMessage(null)
+    if (newPassword.length < 6) {
+      setPasswordMessage({ type: 'error', text: '密码至少需要 6 位' })
+      return
+    }
+    if (newPassword !== confirmPassword) {
+      setPasswordMessage({ type: 'error', text: '两次输入的密码不一致' })
+      return
+    }
+    setPasswordLoading(true)
+    try {
+      const supabase = createClient()
+      const { error } = await supabase.auth.updateUser({ password: newPassword })
+      if (error) {
+        setPasswordMessage({ type: 'error', text: error.message })
+        setPasswordLoading(false)
+        return
+      }
+      setPasswordMessage({ type: 'success', text: '密码已更新' })
+      setNewPassword('')
+      setConfirmPassword('')
+      setPasswordSection(false)
+    } catch (err) {
+      setPasswordMessage({
+        type: 'error',
+        text: err instanceof Error ? err.message : '更新失败，请重试',
+      })
+    } finally {
+      setPasswordLoading(false)
+    }
+  }
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-12 max-w-4xl">
@@ -115,6 +182,87 @@ export default function ProfilePage() {
               </p>
             )}
           </div>
+          <form onSubmit={handleSaveDisplayName} className="mt-4 flex flex-wrap items-end gap-3">
+            <div>
+              <label htmlFor="displayName" className="block text-sm font-medium mb-1">显示名称（用于导航栏显示）</label>
+              <input
+                id="displayName"
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder={user?.email ?? ''}
+                className="w-48 px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
+                disabled={displayNameSaving}
+              />
+            </div>
+            <button
+              type="submit"
+              disabled={displayNameSaving}
+              className="py-2 px-4 bg-foreground text-background rounded font-medium text-sm hover:opacity-90 disabled:opacity-50"
+            >
+              {displayNameSaving ? '保存中...' : '保存'}
+            </button>
+            {displayNameMessage && (
+              <span className={`text-sm ${displayNameMessage === '已保存' ? 'text-foreground' : 'text-destructive'}`}>
+                {displayNameMessage}
+              </span>
+            )}
+          </form>
+          <div className="mt-4 flex flex-wrap gap-3">
+            <Link
+              href="/history"
+              className="text-sm text-muted-foreground hover:text-foreground underline"
+            >
+              浏览历史（已读故事）
+            </Link>
+            <button
+              type="button"
+              onClick={() => setPasswordSection(!passwordSection)}
+              className="text-sm text-muted-foreground hover:text-foreground underline"
+            >
+              {passwordSection ? '取消修改密码' : '修改密码'}
+            </button>
+          </div>
+          {passwordSection && (
+            <form onSubmit={handleChangePassword} className="mt-4 p-4 border border-border rounded-lg space-y-3 max-w-sm">
+              <div>
+                <label htmlFor="newPassword" className="block text-sm font-medium mb-1">新密码（至少 6 位）</label>
+                <input
+                  id="newPassword"
+                  type="password"
+                  value={newPassword}
+                  onChange={(e) => setNewPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
+                  minLength={6}
+                  disabled={passwordLoading}
+                />
+              </div>
+              <div>
+                <label htmlFor="confirmNewPassword" className="block text-sm font-medium mb-1">确认新密码</label>
+                <input
+                  id="confirmNewPassword"
+                  type="password"
+                  value={confirmPassword}
+                  onChange={(e) => setConfirmPassword(e.target.value)}
+                  className="w-full px-3 py-2 border border-border rounded focus:outline-none focus:ring-2 focus:ring-ring"
+                  minLength={6}
+                  disabled={passwordLoading}
+                />
+              </div>
+              {passwordMessage && (
+                <p className={`text-sm ${passwordMessage.type === 'error' ? 'text-destructive' : 'text-foreground'}`}>
+                  {passwordMessage.text}
+                </p>
+              )}
+              <button
+                type="submit"
+                disabled={passwordLoading}
+                className="py-2 px-4 bg-foreground text-background rounded font-medium text-sm hover:opacity-90 disabled:opacity-50"
+              >
+                {passwordLoading ? '更新中...' : '更新密码'}
+              </button>
+            </form>
+          )}
         </div>
 
         {/* 学习统计 */}

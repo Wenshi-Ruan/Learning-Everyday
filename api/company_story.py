@@ -473,11 +473,17 @@ class CompanyStoryGenerator:
             print(f"错误：生成文章失败: {e}")
             raise
         
-        # 确保文章末尾包含 Sources 章节
+        # 移除正文中可能出现的来源引用标注（来源仅在最下方统一列出）
+        import re
+        article = re.sub(r'\s*（来源：\s*\[#?\d*\]）\s*', ' ', article)
+        article = re.sub(r'\s*\(Source:\s*\[#?\d*\]\)\s*', ' ', article)
+        # 移除模型可能输出的 Sources/来源 章节，由我们统一在文末追加
+        article = re.sub(r'\n\n##\s*(?:来源|Sources)\s*\n[\s\S]*$', '', article)
+        article = article.rstrip()
+        # 统一在文章最下方追加来源列表
         sources_section = format_sources_section(factpack.sources, language=language)
-        if (language == 'en' and "## Sources" not in article) or (language == 'zh' and "## 来源" not in article and "## Sources" not in article):
-            article = article.rstrip() + "\n\n" + sources_section
-        
+        article = article + "\n\n" + sources_section
+
         print("✓ 文章生成完成")
         return article
     
